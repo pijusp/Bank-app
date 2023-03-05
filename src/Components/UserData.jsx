@@ -1,4 +1,4 @@
-export const dummyEmployeeList = [
+export const dummyUserList = [
     {
         id: 1,
         firstName: "John",

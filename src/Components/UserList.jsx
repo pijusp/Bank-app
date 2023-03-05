@@ -19,7 +19,13 @@ const UserList = ({ list }) => {
                                 <td>{`${firstName}`}</td>
                                 <td>{`${lastName}`}</td>
                                 <td>{`${balance}`}</td>
-                                <td>Actions</td>
+                                <td>
+                                    <div>
+                                        <input type="button" value="View" />
+                                        <input type="button" value="Edit" />
+                                        <input type="button" value="Delete" />
+                                    </div>
+                                </td>
                             </tr>
                         );
                     })}
