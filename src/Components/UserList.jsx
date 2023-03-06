@@ -10,6 +10,12 @@ const UserList = ({ list, setUserList, onDelete }) => {
     };
 
     const handleBalanceUpdate = (userId, amount) => {
+        if (amount < 0) {
+            alert("Must be positive amount!");
+        }
+        if (amount < 0 || amount > setUserList.balance) {
+            alert("We don't give debts!");
+        }
         if (amount) {
             const updatedUsers = list.map((user) =>
                 user.id === userId
@@ -20,7 +26,10 @@ const UserList = ({ list, setUserList, onDelete }) => {
                     : user
             );
             setUserList(updatedUsers);
-
+            window.localStorage.setItem(
+                "UserList",
+                JSON.stringify(updatedUsers)
+            );
             setBalanceUpdates({ ...balanceUpdates, [userId]: "" });
         }
     };
@@ -50,60 +59,63 @@ const UserList = ({ list, setUserList, onDelete }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {list.map((user) => (
-                        <tr key={user.id}>
-                            <td>{user.firstName}</td>
-                            <td>{user.lastName}</td>
-                            <td>{user.balance}</td>
-                            <td>
-                                <input
-                                    type="number"
-                                    value={balanceUpdates[user.id] || ""}
-                                    onChange={(e) =>
-                                        handleInputChange(
-                                            user.id,
-                                            e.target.value
-                                        )
-                                    }
-                                />
-                                <button
-                                    onClick={() =>
-                                        handleBalanceUpdate(
-                                            user.id,
-                                            balanceUpdates[user.id]
-                                        )
-                                    }
-                                >
-                                    Add
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        handleBalanceUpdate(
-                                            user.id,
-                                            -balanceUpdates[user.id]
-                                        )
-                                    }
-                                >
-                                    Remove
-                                </button>
-                            </td>
-                            <td>
-                                <div>
+                    {list
+                        .sort((a, b) => a.lastName.localeCompare(b.lastName))
+                        .map((user) => (
+                            <tr key={user.id}>
+                                <td>{user.firstName}</td>
+                                <td>{user.lastName}</td>
+                                <td>{user.balance}</td>
+                                <td>
                                     <input
-                                        type="button"
-                                        value="View"
-                                        onClick={() => viewUser(user)}
+                                        type="number"
+                                        value={balanceUpdates[user.id] || ""}
+                                        onChange={(e) =>
+                                            handleInputChange(
+                                                user.id,
+                                                e.target.value
+                                            )
+                                        }
                                     />
-                                    <input type="button" value="Edit" />
-                                    <input
-                                        type="button"
-                                        value="Delete"
-                                        onClick={onDelete}
-                                    />
-                                </div>
-                            </td>
-                        </tr>
-                    ))}
+                                    <button
+                                        onClick={() =>
+                                            handleBalanceUpdate(
+                                                user.id,
+                                                balanceUpdates[user.id]
+                                            )
+                                        }
+                                    >
+                                        Add
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            handleBalanceUpdate(
+                                                user.id,
+                                                -balanceUpdates[user.id]
+                                            )
+                                        }
+                                    >
+                                        Remove
+                                    </button>
+                                </td>
+                                <td>
+                                    <div>
+                                        <input
+                                            type="button"
+                                            value="View"
+                                            onClick={() => viewUser(user)}
+                                        />
+                                        <input type="button" value="Edit" />
+                                        <input
+                                            disabled={user.balance > 0}
+                                            type="button"
+                                            value="Delete"
+                                            onClick={onDelete}
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
                 </tbody>
             </table>
             {showModal && showUserData !== null && (

@@ -1,5 +1,4 @@
 const calculateTotalFunds = (list) => {
-    console.log(list);
     return list.reduce((acc, userList) => acc + userList.balance, 0);
     // let sum = 0;
     // for (let i = 0; i < list.length; i++) {
