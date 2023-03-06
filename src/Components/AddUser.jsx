@@ -13,7 +13,8 @@ const AddUser = ({ onBack, onAddUser }) => {
     const onLastNameChangeHandler = (e) => {
         setLastName(e.target.value);
     };
-    const onSubmit = () => {
+    const onSubmit = (e) => {
+        e.preventDefault();
         const data = {
             id: uuidv4(),
             firstName: firstName,
@@ -47,7 +48,11 @@ const AddUser = ({ onBack, onAddUser }) => {
                 </div>
                 <div>
                     <input type="button" value="Back" onClick={onBack}></input>
-                    <input type="submit" value="Add User"></input>
+                    <input
+                        disabled={firstName.length < 2 || lastName.length < 2}
+                        type="submit"
+                        value="Add User"
+                    ></input>
                 </div>
             </form>
         </div>

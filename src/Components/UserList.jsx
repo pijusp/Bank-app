@@ -1,36 +1,114 @@
-import React from "react";
+import React, { useState } from "react";
 import "./UserList.style.css";
-const UserList = ({ list }) => {
+import UserModal from "./UserModal";
+
+const UserList = ({ list, setUserList, onDelete }) => {
+    const [balanceUpdates, setBalanceUpdates] = useState({});
+
+    const handleInputChange = (userId, amount) => {
+        setBalanceUpdates({ ...balanceUpdates, [userId]: amount });
+    };
+
+    const handleBalanceUpdate = (userId, amount) => {
+        if (amount) {
+            const updatedUsers = list.map((user) =>
+                user.id === userId
+                    ? {
+                          ...user,
+                          balance: user.balance + Number(amount),
+                      }
+                    : user
+            );
+            setUserList(updatedUsers);
+
+            setBalanceUpdates({ ...balanceUpdates, [userId]: "" });
+        }
+    };
+    const [showModal, setShowModal] = useState(false);
+    const onCloseModal = () => {
+        setShowModal(false);
+    };
+    const [showUserData, setShowUserData] = useState(null);
+
+    const viewUser = (user) => {
+        setShowUserData(user);
+        setShowModal(true);
+    };
     return (
         <div>
-            This is employee list page
+            <article>
+                <h3 className="list-header">Bank users list</h3>
+            </article>
             <table>
                 <thead>
                     <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>Name</th>
+                        <th>Surname</th>
                         <th>Balance</th>
+                        <th>Funds Update</th>
+                        <th>User Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {list.map(({ id, firstName, lastName, balance }) => {
-                        return (
-                            <tr key={id}>
-                                <td>{`${firstName}`}</td>
-                                <td>{`${lastName}`}</td>
-                                <td>{`${balance}`}</td>
-                                <td>
-                                    <div>
-                                        <input type="button" value="View" />
-                                        <input type="button" value="Edit" />
-                                        <input type="button" value="Delete" />
-                                    </div>
-                                </td>
-                            </tr>
-                        );
-                    })}
+                    {list.map((user) => (
+                        <tr key={user.id}>
+                            <td>{user.firstName}</td>
+                            <td>{user.lastName}</td>
+                            <td>{user.balance}</td>
+                            <td>
+                                <input
+                                    type="number"
+                                    value={balanceUpdates[user.id] || ""}
+                                    onChange={(e) =>
+                                        handleInputChange(
+                                            user.id,
+                                            e.target.value
+                                        )
+                                    }
+                                />
+                                <button
+                                    onClick={() =>
+                                        handleBalanceUpdate(
+                                            user.id,
+                                            balanceUpdates[user.id]
+                                        )
+                                    }
+                                >
+                                    Add
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleBalanceUpdate(
+                                            user.id,
+                                            -balanceUpdates[user.id]
+                                        )
+                                    }
+                                >
+                                    Remove
+                                </button>
+                            </td>
+                            <td>
+                                <div>
+                                    <input
+                                        type="button"
+                                        value="View"
+                                        onClick={() => viewUser(user)}
+                                    />
+                                    <input type="button" value="Edit" />
+                                    <input
+                                        type="button"
+                                        value="Delete"
+                                        onClick={onDelete}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
+            {showModal && showUserData !== null && (
+                <UserModal onClose={onCloseModal} user={showUserData} />
+            )}
         </div>
     );
 };
