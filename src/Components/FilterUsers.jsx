@@ -9,7 +9,7 @@ const FilterUsers = ({ userList, setFilteredUsers }) => {
     };
     const filterWithNoBalance = () => {
         const usersWithNoBalance = userList.filter(
-            (userList) => (userList.balance = 0)
+            (userList) => userList.balance === 0
         );
         setFilteredUsers(usersWithNoBalance);
     };
@@ -18,9 +18,15 @@ const FilterUsers = ({ userList, setFilteredUsers }) => {
     };
     return (
         <div>
-            <button onClick={filterWithBalance}>Active Users</button>
-            <button onClick={filterWithNoBalance}>Inactive Users</button>
-            <button onClick={clearFilter}>All Users</button>
+            <button className="filter-btn" onClick={filterWithBalance}>
+                Active Users
+            </button>
+            <button className="filter-btn" onClick={filterWithNoBalance}>
+                Inactive Users
+            </button>
+            <button className="filter-btn" onClick={clearFilter}>
+                All Users
+            </button>
         </div>
     );
 };

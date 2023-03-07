@@ -4,17 +4,17 @@ import UserList from "./UserList";
 import { dummyUserList } from "./UserData";
 import AddUser from "./AddUser";
 import calculateTotalFunds from "../functions/calculateTotalFunds";
-// import FilterUsers from "./FilterUsers";
+import FilterUsers from "./FilterUsers";
 const Home = () => {
     const [userList, setUserList] = useState(dummyUserList);
-    // const [filteredUsers, setFilteredUsers] = useState();
+    const [filteredUsers, setFilteredUsers] = useState([]);
     const [shownPage, setShownPage] = useState("list");
 
     useEffect(() => {
         const storedUsers = JSON.parse(
             localStorage.getItem("UserList") || "[]"
         );
-        setUserList(storedUsers);
+        updateLists(storedUsers);
     }, []);
     useEffect(() => {
         localStorage.setItem("UserList", JSON.stringify(userList));
@@ -37,6 +37,10 @@ const Home = () => {
     };
     const addUser = (data) => {
         setUserList([...userList, data]);
+    };
+    const updateLists = (userList) => {
+        setUserList(userList);
+        setFilteredUsers(userList);
     };
     return (
         <>
@@ -65,13 +69,13 @@ const Home = () => {
                             onClick={addUserClickHandler}
                             className="add-user-btn"
                         />
-                        {/* <FilterUsers
+                        <FilterUsers
                             userList={userList}
                             setFilteredUsers={setFilteredUsers}
-                        /> */}
+                        />
                         <UserList
-                            list={userList}
-                            setUserList={setUserList}
+                            updateLists={updateLists}
+                            list={filteredUsers}
                             onDelete={deleteUser}
                         />
                     </>

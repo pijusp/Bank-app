@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./UserList.style.css";
 import UserModal from "./UserModal";
 
-const UserList = ({ list, setUserList, onDelete }) => {
+const UserList = ({ list, onDelete, updateLists }) => {
     const [balanceUpdates, setBalanceUpdates] = useState({});
 
     const handleInputChange = (userId, amount) => {
@@ -24,7 +24,7 @@ const UserList = ({ list, setUserList, onDelete }) => {
                       }
                     : user
             );
-            setUserList(updatedUsers);
+            updateLists(updatedUsers);
             window.localStorage.setItem(
                 "UserList",
                 JSON.stringify(updatedUsers)
@@ -77,6 +77,7 @@ const UserList = ({ list, setUserList, onDelete }) => {
                                         }
                                     />
                                     <button
+                                        className="balance-update-btn"
                                         onClick={() =>
                                             handleBalanceUpdate(
                                                 user.id,
@@ -87,6 +88,7 @@ const UserList = ({ list, setUserList, onDelete }) => {
                                         Add
                                     </button>
                                     <button
+                                        className="balance-update-btn"
                                         onClick={() =>
                                             handleBalanceUpdate(
                                                 user.id,
@@ -100,12 +102,14 @@ const UserList = ({ list, setUserList, onDelete }) => {
                                 <td>
                                     <div>
                                         <input
+                                            className="actions-btn"
                                             type="button"
                                             value="View"
                                             onClick={() => viewUser(user)}
                                         />
-                                        <input type="button" value="Edit" />
+
                                         <input
+                                            className="actions-btn"
                                             disabled={user.balance > 0}
                                             type="button"
                                             value="Delete"
