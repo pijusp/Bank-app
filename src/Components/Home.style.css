@@ -105,7 +105,15 @@
     white-space: nowrap;
     margin: 0 7px;
 }
-
+.actions-btn:disabled {
+    background-color: crimson;
+}
+.actions-btn[disabled]:hover {
+    background-color: crimson;
+}
+.actions-btn[disabled]:focus {
+    background-color: crimson;
+}
 .balance-update-btn:hover,
 .balance-update-btn:focus,
 .actions-btn:hover,

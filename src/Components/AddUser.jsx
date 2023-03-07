@@ -22,8 +22,8 @@ const AddUser = ({ onBack, onAddUser }) => {
             balance: 0,
         };
         onAddUser(data);
-        onBack();
         alert("User added");
+        onBack();
     };
     return (
         <div className="form-container">

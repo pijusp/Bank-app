@@ -32,11 +32,11 @@ const Home = () => {
         const indexToDelete = userList.indexOf(data);
         const tempList = [...userList];
         tempList.splice(indexToDelete, 1);
-        setUserList(tempList);
         alert("User deleted successfully");
+        updateLists(tempList);
     };
     const addUser = (data) => {
-        setUserList([...userList, data]);
+        updateLists([...userList, data]);
     };
     const updateLists = (userList) => {
         setUserList(userList);
