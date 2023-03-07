@@ -23,6 +23,7 @@ const AddUser = ({ onBack, onAddUser }) => {
         };
         onAddUser(data);
         onBack();
+        alert("User added");
     };
     return (
         <div className="form-container">

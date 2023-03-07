@@ -13,3 +13,15 @@
     float: right;
     margin-bottom: 5px;
 }
+.statistics {
+    display: flex;
+    justify-content: end;
+    margin: 5px;
+}
+.header-center {
+    display: flex;
+    justify-content: center;
+}
+.client-number {
+    padding-right: 10px;
+}

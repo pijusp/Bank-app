@@ -4,15 +4,21 @@ import UserList from "./UserList";
 import { dummyUserList } from "./UserData";
 import AddUser from "./AddUser";
 import calculateTotalFunds from "../functions/calculateTotalFunds";
+// import FilterUsers from "./FilterUsers";
 const Home = () => {
     const [userList, setUserList] = useState(dummyUserList);
+    // const [filteredUsers, setFilteredUsers] = useState();
     const [shownPage, setShownPage] = useState("list");
+
     useEffect(() => {
-        const listInString = window.localStorage.getItem("UserList");
-        if (listInString) {
-            _setUserList(JSON.parse(listInString));
-        }
+        const storedUsers = JSON.parse(
+            localStorage.getItem("UserList") || "[]"
+        );
+        setUserList(storedUsers);
     }, []);
+    useEffect(() => {
+        localStorage.setItem("UserList", JSON.stringify(userList));
+    }, [userList]);
     const addUserClickHandler = () => {
         setShownPage("add");
     };
@@ -26,27 +32,26 @@ const Home = () => {
         const indexToDelete = userList.indexOf(data);
         const tempList = [...userList];
         tempList.splice(indexToDelete, 1);
-        _setUserList(tempList);
-    };
-    const _setUserList = (list) => {
-        setUserList(list);
-        window.localStorage.setItem("UserList", JSON.stringify(list));
+        setUserList(tempList);
+        alert("User deleted successfully");
     };
     const addUser = (data) => {
-        _setUserList([...userList, data]);
+        setUserList([...userList, data]);
     };
     return (
         <>
             <article className="article-header">
                 <header>
-                    <div>
+                    <div className="header-center">
                         <h1>React Bank</h1>
                     </div>
                     <div className="statistics">
-                        <div>Number of clients:{userList.length}</div>
+                        <div className="client-number">
+                            Number of clients: {userList.length}
+                        </div>
                         <div>
-                            Total amount of funds:
-                            {calculateTotalFunds(userList)}
+                            Total amount of funds:{" "}
+                            {calculateTotalFunds(userList).toFixed(2)} €
                         </div>
                     </div>
                 </header>
@@ -60,6 +65,10 @@ const Home = () => {
                             onClick={addUserClickHandler}
                             className="add-user-btn"
                         />
+                        {/* <FilterUsers
+                            userList={userList}
+                            setFilteredUsers={setFilteredUsers}
+                        /> */}
                         <UserList
                             list={userList}
                             setUserList={setUserList}

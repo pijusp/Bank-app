@@ -10,11 +10,10 @@ const UserList = ({ list, setUserList, onDelete }) => {
     };
 
     const handleBalanceUpdate = (userId, amount) => {
-        if (amount < 0) {
-            alert("Must be positive amount!");
-        }
-        if (amount < 0 || amount > setUserList.balance) {
+        let result = list.find((item) => item.id === userId);
+        if (amount < 0 && Math.abs(amount) > result.balance) {
             alert("We don't give debts!");
+            return;
         }
         if (amount) {
             const updatedUsers = list.map((user) =>
@@ -65,7 +64,7 @@ const UserList = ({ list, setUserList, onDelete }) => {
                             <tr key={user.id}>
                                 <td>{user.firstName}</td>
                                 <td>{user.lastName}</td>
-                                <td>{user.balance}</td>
+                                <td>{user.balance.toFixed(2)}</td>
                                 <td>
                                     <input
                                         type="number"
